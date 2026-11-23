@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from database import engine, SessionLocal
 import models, schemas
 
+
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -17,6 +18,16 @@ def get_db():
 
 
 
+
+
+#Home
+@app.get("/")
+def home():
+    return{
+        "message": "Blog API Started"
+    }
+
+
 #Read specific blog
 @app.get("/blogs/{id}", response_model=schemas.BlogResponse)
 def show_specific_blog(id:int, db:Session=Depends(get_db)):
@@ -28,14 +39,6 @@ def show_specific_blog(id:int, db:Session=Depends(get_db)):
         )
     return blog
 
-
-
-#Home
-@app.get("/")
-def home():
-    return{
-        "message": "Blog API Started"
-    }
 
 #Create Blog
 @app.post("/blogs", response_model=schemas.BlogResponse)
